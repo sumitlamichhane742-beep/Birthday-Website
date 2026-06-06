@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Surprise | For Sapana</title>
+    <!-- Romantic Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --pink: #ff4d6d;
+            --dark: #1a0a1a;
+            --soft: #ffb3c1;
+            --glow: 0 0 20px rgba(255, 77, 109, 0.7);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--dark);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Background Animation */
+        .bg-gradient {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #2d0b21 0%, #1a0a1a 100%);
+            z-index: -1;
+        }
+
+        /* Stages */
+        .stage {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            width: 100%;
+            max-width: 500px;
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        .active { display: flex; flex-direction: column; align-items: center; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Stage 0: Password Gate */
+        .lock-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 40px 30px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        h2 { font-family: 'Dancing Script', cursive; font-size: 2.5rem; margin-bottom: 20px; color: var(--soft); }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 2px solid var(--pink);
+            background: rgba(0,0,0,0.3);
+            color: white;
+            text-align: center;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            outline: none;
+        }
+
+        .btn {
+            background: var(--pink);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: var(--glow);
+            transition: 0.3s;
+        }
+
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 0 30px var(--pink); }
+
+        /* Balloons */
+        .balloon {
+            position: absolute;
+            bottom: -100px;
+            width: 40px;
+            height: 50px;
+            border-radius: 50%;
+            z-index: 0;
+            animation: float 8s linear infinite;
+        }
+
+        @keyframes float {
+            to { transform: translateY(-110vh) rotate(20deg); }
+        }
+
+        /* Content Styles */
+        .cake { font-size: 80px; animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+
+        .big-text { font-family: 'Dancing Script', cursive; font-size: 3.5rem; text-shadow: var(--glow); }
+
+        .photo-box {
+            width: 250px;
+            height: 300px;
+            border: 10px solid white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            transform: rotate(-3deg);
+            margin: 20px 0;
+            background: #ccc;
+        }
+
+        .letter {
+            background: white;
+            color: #333;
+            padding: 25px;
+            border-radius: 5px;
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.3rem;
+            text-align: left;
+            box-shadow: 10px 10px 40px rgba(0,0,0,0.5);
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-gradient"></div>
+
+    <!-- Background Music (Using a stable royalty-free link) -->
+    <audio id="myMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- STEP 0: THE PASSWORD -->
+    <div id="stage0" class="stage active">
+        <div class="lock-card">
+            <h2>Who is the most beautiful girl?</h2>
+            <p style="font-size: 0.8rem; margin-bottom: 10px; opacity: 0.7;">(Hint: Enter your Name)</p>
+            <input type="text" id="passInput" placeholder="Enter name...">
+            <button class="btn" onclick="checkPass()">Unlock ❤️</button>
+            <p id="error" style="color: var(--pink); margin-top: 10px; display: none;">That's not her! Try again.</p>
+        </div>
+    </div>
+
+    <!-- STEP 1: WELCOME SAPANA -->
+    <div id="stage1" class="stage" onclick="nextStage(1)">
+        <h1 class="big-text">Happy Birthday Sapana!</h1>
+        <p>I've been waiting for you... ✨</p>
+        <p style="margin-top: 20px; font-size: 0.9rem; opacity: 0.6;">(Tap to continue)</p>
+    </div>
+
+    <!-- STEP 2: CAKE -->
+    <div id="stage2" class="stage" onclick="nextStage(2)">
+        <div class="cake">🎂</div>
+        <h2 class="big-text">Make a Wish, Sapana</h2>
+        <p>May your life be as sweet as this cake.</p>
+    </div>
+
+    <!-- STEP 3: PHOTO SECTION -->
+    <div id="stage3" class="stage" onclick="nextStage(3)">
+        <h2>For the most beautiful face...</h2>
+        <div class="photo-box">
+            <!-- Place your photo URL below inside src -->
+            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=300" alt="Sapana" style="width:100%; height:100%; object-fit:cover;">
+        </div>
+        <p>I miss you more than words can say.</p>
+    </div>
+
+    <!-- STEP 4: LOVE LETTER -->
+    <div id="stage4" class="stage">
+        <button id="readBtn" class="btn" onclick="typeLetter()">Read My Letter 💌</button>
+        <div id="letterBox" class="letter">
+            <p id="typewriter"></p>
+        </div>
+    </div>
+
+    <script>
+        const music = document.getElementById('myMusic');
+
+        // PASSWORD CHECK
+        function checkPass() {
+            const input = document.getElementById('passInput').value.trim().toLowerCase();
+            const error = document.getElementById('error');
+
+            if (input === "sapana") {
+                music.play().catch(() => console.log("Audio needs interaction"));
+                nextStage(0);
+                startBalloons();
+            } else {
+                error.style.display = "block";
+                setTimeout(() => error.style.display = "none", 2000);
+            }
+        }
+
+        // STAGE CHANGER
+        function nextStage(num) {
+            document.getElementById('stage' + num).classList.remove('active');
+            document.getElementById('stage' + (num + 1)).classList.add('active');
+        }
+
+        // BALLOON SYSTEM
+        function startBalloons() {
+            setInterval(() => {
+                const b = document.createElement('div');
+                b.className = 'balloon';
+                b.style.left = Math.random() * 100 + 'vw';
+                b.style.backgroundColor = `hsl(${Math.random() * 360}, 70%, 60%)`;
+                b.style.animationDuration = (Math.random() * 3 + 5) + 's';
+                document.body.appendChild(b);
+                setTimeout(() => b.remove(), 8000);
+            }, 600);
+        }
+
+        // TYPEWRITER LETTER
+        const message = "Dear Sapana, \n\nI created this specifically for you because you deserve the world. Even though we are apart, I hope this small surprise brings a smile to your face. \n\nEvery day I miss you more, and I can't wait to see you again. You are the best thing that ever happened to me. \n\nHappy Birthday, Sapana! ❤️";
+
+        function typeLetter() {
+            document.getElementById('readBtn').style.display = 'none';
+            document.getElementById('letterBox').style.display = 'block';
+            let i = 0;
+            const speed = 60;
+            const target = document.getElementById('typewriter');
+
+            function typing() {
+                if (i < message.length) {
+                    target.innerHTML += (message.charAt(i) === "\n") ? "<br>" : message.charAt(i);
+                    i++;
+                    setTimeout(typing, speed);
+                }
+            }
+            typing();
+        }
+    </script>
+</body>
+</html>
